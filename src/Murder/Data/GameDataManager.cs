@@ -866,10 +866,16 @@ namespace Murder.Data
                 if (newAtlas is not null)
                 {
                     LoadedAtlasses[atlas] = newAtlas;
+                    // seems like a waste to re-search for it at the bottom of the function if we already have it.
+                    return newAtlas;
                 }
                 else
                 {
-                    throw new ArgumentException($"Atlas {atlas} is not loaded and couldn't be loaded from '{filepath}'.");
+                    if (warnOnError)
+                        GameLogger.Warning($"Atlas {atlas} is not loaded and couldn't be loaded from '{filepath}'.");
+
+                    // the dictionary call at the bottom would have returned null anyway.
+                    return null;
                 }
             }
 
